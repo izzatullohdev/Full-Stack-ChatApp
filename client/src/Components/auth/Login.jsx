@@ -1,8 +1,12 @@
 import { useRef, useState } from "react";
 import { IoEye } from "react-icons/io5";
 import { IoEyeOff } from "react-icons/io5";
+import { showToast } from "../../utils/ErrorMessage";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [emailValue, setEmailValue] = useState("");
+  const [passwordValue, setPasswordValue] = useState("");
+  const [toast, setToast] = useState({ message: "", visible: false });
   const inputRef = useRef();
   function toggleShowPassword() {
     setShowPassword(!showPassword);
@@ -10,9 +14,27 @@ const Login = () => {
   }
   function handleSubmit(e) {
     e.preventDefault();
+    if (emailValue === "" || passwordValue === "") {
+      showToast(setToast, `Email va parolni kiriting `, 3000);
+      return;
+    }
+    // object with email and password
+    const data = {
+      email: emailValue,
+      password: passwordValue,
+    };
+    console.log(data);
   }
+  //
   return (
     <div className="flex flex-col items-center justify-center h-[70vh]">
+      <div>
+        {toast.visible && (
+          <div className="bg-red-500 text-white p-4 rounded absolute left-[50%] translate-x-[-50%] top-10">
+            {toast.message} &#128517;
+          </div>
+        )}
+      </div>
       <form
         onClick={handleSubmit}
         className="flex flex-col space-y-4 bg-gray-800 text-gray-800 p-5 w-[30vw] rounded"
@@ -22,7 +44,15 @@ const Login = () => {
           <label htmlFor="email" className="text-white">
             Email
           </label>
-          <input type="email" name="email" id="email" className="p-2 rounded" />
+          <input
+            type="email"
+            name="email"
+            id="email"
+            className="p-2 rounded"
+            placeholder="Email"
+            value={emailValue}
+            onChange={(e) => setEmailValue(e.target.value)}
+          />
         </div>
         <div className="flex flex-col space-y-2">
           <label htmlFor="password" className="text-white">
@@ -33,7 +63,10 @@ const Login = () => {
               type="password"
               name="password"
               id="password"
+              placeholder="Password"
               ref={inputRef}
+              value={passwordValue}
+              onChange={(e) => setPasswordValue(e.target.value)}
               className="p-2 rounded w-full"
             />
             <button
@@ -50,6 +83,45 @@ const Login = () => {
         >
           Login
         </button>
+        <p className="text-white text-center">
+          {" Don't have an account?  "}
+          <a href="/register" className="text-purple-800">
+            Register
+          </a>
+        </p>
+        {/* open the google, github , facebook, linkedin login */}
+        <div className="flex justify-center space-x-4">
+          <button
+            type="submit"
+            className="bg-gray-800 text-white  font-bold rounded"
+          >
+            <img
+              src="https://img.icons8.com/ios-glyphs/30/ffffff/google-logo.png"
+              alt=""
+            />
+          </button>
+          <button
+            type="submit"
+            className="bg-gray-800 text-white font-bold  rounded"
+          >
+            <img
+              src="https://img.icons8.com/ios-glyphs/30/ffffff/github.png"
+              alt=""
+            />
+          </button>
+          <button>
+            <img
+              src="https://img.icons8.com/ios-glyphs/30/ffffff/facebook-new.png"
+              alt=""
+            />
+          </button>
+          <button>
+            <img
+              src="https://img.icons8.com/ios-glyphs/30/ffffff/linkedin.png"
+              alt=""
+            />
+          </button>
+        </div>
       </form>
     </div>
   );

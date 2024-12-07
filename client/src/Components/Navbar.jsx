@@ -7,10 +7,10 @@ const Navbar = () => {
         <h1>H27TECH</h1>
         <ul className="flex space-x-4">
           <li>
-            <NavLink>Login</NavLink>
+            <NavLink to="/login">Login</NavLink>
           </li>
           <li>
-            <NavLink>Register</NavLink>
+            <NavLink to={"/register"}>Register</NavLink>
           </li>
         </ul>
       </div>
